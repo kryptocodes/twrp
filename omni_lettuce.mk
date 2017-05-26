@@ -22,3 +22,8 @@ PRODUCT_NAME := omni_lettuce
 PRODUCT_BRAND := YU
 PRODUCT_MODEL := Yuphoria
 PRODUCT_MANUFACTURER := YU
+
+# Enable stock zip packages flash
+PRODUCT_DEFAULT_PROPERTY_OVERRIDES += \
+    ro.build.product=YUPHORIA \
+    ro.product.device=YUPHORIA
