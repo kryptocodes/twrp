@@ -1,1 +1,3 @@
 persist.sys.usb.config=mtp,adb
+ro.build.product=YUPHORIA
+ro.product.device=YUPHORIA
