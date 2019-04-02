@@ -37,12 +37,18 @@ TARGET_BOARD_PLATFORM_GPU := qcom-adreno306
 
 # Kernel
 BOARD_KERNEL_BASE := 0x80000000
-BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1 earlyprintk buildvariant=eng
+BOARD_KERNEL_CMDLINE := console=ttyHSL0,115200,n8 androidboot.console=ttyHSL0 androidboot.hardware=qcom msm_rtb.filter=0x237 ehci-hcd.park=3 androidboot.bootdevice=7824900.sdhci lpm_levels.sleep_disabled=1
+BOARD_KERNEL_IMAGE_NAME := Image
 BOARD_KERNEL_PAGESIZE := 2048
-BOARD_MKBOOTIMG_ARGS :=  --kernel_offset 0x00008000 --ramdisk_offset 0x01000000 --tags_offset 0x00000100 --dt $(DEVICE_PATH)/dt.img
-BOARD_CUSTOM_BOOTIMG_MK := $(DEVICE_PATH)/mkbootimg.mk
-TARGET_PREBUILT_KERNEL := $(DEVICE_PATH)/kernel
-BOARD_KERNEL_CMDLINE += androidboot.selinux=permissive
+BOARD_KERNEL_SEPARATED_DT := true
+BOARD_KERNEL_TAGS_OFFSET := 0x01E00000
+BOARD_RAMDISK_OFFSET := 0x02000000
+LZMA_RAMDISK_TARGETS := recovery
+
+KERNEL_TOOLCHAIN := $(shell pwd)/prebuilts/gcc/linux-x86/aarch64/aarch64-opt-linux-android/bin
+TARGET_KERNEL_CONFIG := reborn_lettuce_defconfig
+TARGET_KERNEL_CROSS_COMPILE_PREFIX := aarch64-opt-linux-android-
+TARGET_KERNEL_SOURCE := kernel/cyanogen/msm8916
 
 # Filesystem
 BOARD_FLASH_BLOCK_SIZE := 131072
@@ -57,7 +63,7 @@ BOARD_USERDATAIMAGE_PARTITION_SIZE := 13042155008
 BOARD_HAS_LARGE_FILESYSTEM := true
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_USE_F2FS := true
-TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/twrp.fstab
+TARGET_RECOVERY_FSTAB := $(DEVICE_PATH)/recovery/root/etc/twrp.fstab
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBA_8888"
 TARGET_RECOVERY_QCOM_RTC_FIX := true
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
@@ -74,11 +80,8 @@ TW_NEW_ION_HEAP := true
 
 # Encryption support
 TW_INCLUDE_CRYPTO := false
-TARGET_HW_DISK_ENCRYPTION := false
+TARGET_HW_DISK_ENCRYPTION := true
 TARGET_KEYMASTER_WAIT_FOR_QSEE := true
 
 # Asian region languages
 TW_EXTRA_LANGUAGES := true
-
-# DT2W
-TARGET_TAP_TO_WAKE_NODE := "/sys/devices/soc.0/78b9000.i2c/i2c-5/5-0040/double_tap_enable"
